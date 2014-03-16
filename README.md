@@ -5,6 +5,8 @@
 Free open source content management system for PHP,
 released under GPL License and powered by [CakePHP 3.0](http://cakephp.org) MVC framework.
 
+This is an unstable repository and should be treated as an alpha.
+
 ## Installing QuickAppsCMS via composer
 
 You can install QuickAppsCMS into your project using
