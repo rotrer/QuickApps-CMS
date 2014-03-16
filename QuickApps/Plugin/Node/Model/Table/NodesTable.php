@@ -7,9 +7,11 @@ class NodesTable extends Table {
 		$this->addBehavior(
 			'Field.Fieldable',
 			[
+				'entity' => 'nodes',
 				'mapper' => function ($entity, $key, $mapReduce) {
 					$this->setFieldableConfig(['entity' => "nodes_{$entity->node_type_slug}"]);
 					$this->fieldableMapper($entity, $key, $mapReduce);
+					$this->setFieldableConfig(['entity' => 'nodes']); //
 				}
 			]
 		);
@@ -19,7 +21,7 @@ class NodesTable extends Table {
 			'NodeTypes',
 			[
 				'className' => 'QuickApps\Plugin\Node\Model\Table\NodeTypesTable',
-				'foreignKey' => ['node_type_id', 'node_type_slug']
+				'foreignKey' => 'node_type_id'
 			]
 		);
 	}
