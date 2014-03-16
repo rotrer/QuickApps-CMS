@@ -20,6 +20,11 @@ namespace QuickApps\Config;
  */
 require __DIR__ . '/paths.php';
 
+/**
+ * Load QuickApps basic functionality.
+ */
+require __DIR__ . '/basics.php';
+
 // Use composer to load the autoloader.
 if (file_exists(VENDOR_INCLUDE_PATH . '/autoload.php')) {
 	require VENDOR_INCLUDE_PATH . '/autoload.php';
@@ -71,10 +76,10 @@ use Cake\Utility\Inflector;
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
-	Configure::config('qa_boot', new PhpConfig(TMP));
+	Configure::config('boot', new PhpConfig(TMP));
 	Configure::config('default', new PhpConfig());
 	Configure::load('app.php', 'default', false);
-	Configure::load('quickapps_init', 'qa_boot', false);
+	Configure::load('boot.php', 'boot', false);
 } catch (\Exception $e) {
 	die('Unable to load Config/app.php. Create it by copying Config/app.default.php to Config/app.php.');
 }

@@ -87,7 +87,7 @@ class FieldableBehavior extends Behavior {
 			/**
 			 * FIX: polymorphic entities (eg. Nodes) may have changed self::_config[entity]
 			 * value during mapper invocation.
-			 * Must be respored to initial value in order to avoid unexpected errors.
+			 * Must be restored to it initial value in order to avoid unexpected errors.
 			 */
 			if ($configBefore != $configAfter) {
 				$this->_config = $configBefore;
@@ -96,7 +96,32 @@ class FieldableBehavior extends Behavior {
 	}
 
 /**
- * The method which actually fetches field records.
+ * The method which actually fetches custom field data.
+ *
+ * Iterates over each entity from result set and fetches
+ * custom fields data under de `_fields` key.
+ *
+ * Example:
+ *
+ *     array(
+ *         [id] => 87,
+ *         [name] => Peter Pan,
+ *         [phone] => +56 789 123 458,
+ *         [_fields] => array(
+ *             [user_age] => array(
+ *                 [data] => 22
+ *                 ...
+ *             ),
+ *             [other_custom_field] => array(
+ *                 [data] => stored data
+ *                 ...
+ *             ),
+ *             ...
+ *         )
+ *     )
+ *
+ * In the example above, the User entity has custom field named `user_age`.
+ * and its current value is 22.
  *
  * @param Entity $entity the entity to modify
  * @param integer $key entity key index from result collection.
@@ -105,15 +130,37 @@ class FieldableBehavior extends Behavior {
  */
 	public function fieldableMapper($entity, $key, $mapReduce) {
 		$FieldData = TableRegistry::get('Field.FieldData');
+		$FieldInstances = TableRegistry::get('Field.FieldInstances');
 		$_fields = [];
 
-		$entitysFieldData = $FieldData->find()
-			->matching('FieldInstances', function ($q) {
-				return $q->where(['FieldInstances.entity' => "{$this->_config['entity']}"]);
-			});
+		// get attached field instances for this entity
+		$entitieAttachedFields = $FieldInstances->find()
+			->where(['FieldInstances.entity' => "{$this->_config['entity']}"]);
 
-		foreach ($entitysFieldData as $fieldData) {
-			$_fields[] = $fieldData;
+		// for each instance get the stored data for this entity
+		foreach ($entitieAttachedFields as $instance) {
+			$storedData = $FieldData->find()
+			->select(['data'])
+			->where(
+				[
+					'FieldData.field_instance_id' => $instance->id,
+					'FieldData.entity' => $this->_config['entity'],
+					'FieldData.entity_id' => $entity->get($this->_table->primaryKey())
+				]
+			)
+			->first();
+
+			$storedData->set(
+				[
+					'label' => $instance->label,
+					'description' => $instance->description,
+					'required' => $instance->required,
+					'settings' => $instance->settings
+				],
+				['guard' => false]
+			);
+
+			$_fields[$instance->slug] = $storedData;
 		}
 
 		$entity->set('_fields', $_fields);

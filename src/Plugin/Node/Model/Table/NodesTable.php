@@ -11,7 +11,6 @@ class NodesTable extends Table {
 				'mapper' => function ($entity, $key, $mapReduce) {
 					$this->setFieldableConfig(['entity' => "nodes_{$entity->node_type_slug}"]);
 					$this->fieldableMapper($entity, $key, $mapReduce);
-					$this->setFieldableConfig(['entity' => 'nodes']); //
 				}
 			]
 		);

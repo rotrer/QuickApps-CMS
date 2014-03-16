@@ -26,4 +26,8 @@ class ServeController extends NodeAppController {
 			$this->set('node', $node);
 		}
 	}
+
+	public function search($criteria) {
+		// TODO:
+	}
 }

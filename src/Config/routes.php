@@ -65,8 +65,8 @@ require CAKE . 'Config/routes.php';
  * This will create a locale-prefixed version of all registered
  * routes.
  */
-if (Configure::read('quickapps_init.url_language_prefix')) {
-	$langs = implode('|', Configure::read('quickapps_init.active_languages'));
+if (Configure::read('boot.url_language_prefix')) {
+	$langs = implode('|', Configure::read('boot.active_languages'));
 	$routes_count = Router::$_routes->count();
 
 	for ($i = 0; $i < $routes_count; $i++) {

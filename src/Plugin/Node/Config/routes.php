@@ -3,9 +3,9 @@ namespace QuickApps\Node\Config;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 
-$node_type_slugs = implode('|', (array)Configure::read('quickapps_init.node_type_slugs'));
+$node_types = implode('|', (array)Configure::read('boot.node_types'));
 
-if (!empty($node_type_slugs)) {
+if (!empty($node_types)) {
 	Router::connect(
 		'/:node_type_slug/:node_slug.html',
 		[
@@ -14,7 +14,7 @@ if (!empty($node_type_slugs)) {
 			'action' => 'details'
 		],
 		[
-			'node_type_slug' => $node_type_slugs,
+			'node_type_slug' => $node_types,
 			'node_slug' => '[a-z0-9\-]+',
 			'pass' => ['node_type_slug', 'node_slug']
 		]
@@ -49,4 +49,4 @@ Router::connect(
 	]
 );
 
-unset($node_type_slugs);
+unset($node_types);

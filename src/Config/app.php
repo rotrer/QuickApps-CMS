@@ -320,12 +320,14 @@ $config = [
 /**
  * Load site's database information and merge with QuickApps core.
  */
-$database = json_decode(file_get_contents(SITE_ROOT . '/Config/database.json'));
-$config['Datasources']['default']['driver'] = 'Cake\Database\Driver\\' . $database->driver;
-$config['Datasources']['default']['persistent'] = $database->persistent;
-$config['Datasources']['default']['host'] = $database->host;
-$config['Datasources']['default']['login'] = $database->login;
-$config['Datasources']['default']['password'] = $database->password;
-$config['Datasources']['default']['database'] = $database->database;
-$config['Datasources']['default']['prefix'] = $database->prefix;
-$config['Datasources']['default']['encoding'] = $database->encoding;
+if (file_exists(SITE_ROOT . '/Config/database.json')) {
+	$database = json_decode(file_get_contents(SITE_ROOT . '/Config/database.json'));
+	$config['Datasources']['default']['driver'] = 'Cake\Database\Driver\\' . $database->driver;
+	$config['Datasources']['default']['persistent'] = $database->persistent;
+	$config['Datasources']['default']['host'] = $database->host;
+	$config['Datasources']['default']['login'] = $database->login;
+	$config['Datasources']['default']['password'] = $database->password;
+	$config['Datasources']['default']['database'] = $database->database;
+	$config['Datasources']['default']['prefix'] = $database->prefix;
+	$config['Datasources']['default']['encoding'] = $database->encoding;
+}
