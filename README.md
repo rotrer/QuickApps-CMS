@@ -14,7 +14,7 @@ a starting point. For existing applications you can add the following to your
 `composer.json` file:
 
 	"require": {
-		"quickapps/cms": "2.0-dev0"
+		"quickapps/cms": "2.0.*@dev"
 	}
 
 And run `php composer.phar update`
