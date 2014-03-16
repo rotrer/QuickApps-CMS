@@ -1,0 +1,1 @@
+<?php pr($node->toArray()); ?>
