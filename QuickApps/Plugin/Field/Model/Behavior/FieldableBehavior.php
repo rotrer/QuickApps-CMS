@@ -2,6 +2,7 @@
 namespace QuickApps\Plugin\Field\Model\Behavior;
 use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
+use Cake\ORM\Query;
 
 class FieldableBehavior extends Behavior {
 	protected $_config = [
@@ -9,6 +10,8 @@ class FieldableBehavior extends Behavior {
 		'mapper' => null,
 		'enabled' => true
 	];
+
+	protected $_table = null;
 
 /**
  * Constructor
@@ -23,6 +26,7 @@ class FieldableBehavior extends Behavior {
 		};
 
 		$this->_config = array_merge($this->_config, $config);
+		$this->_table = $table;
 	}
 
 /**
@@ -39,14 +43,46 @@ class FieldableBehavior extends Behavior {
 				->traverse(function ($expression) {
 					$field = $expression->getField();
 					$value = $expression->getValue();
-
+					$conjunction = $expression->type();
 					list($entity, $field_name) = pluginSplit($field);
-					//pr($entity); 
-					//pr($field_name); 
-					// TODO: field api search
+
+					if (!$field_name) {
+						$field_name = $entity;
+					}
+
+					$field_name = preg_replace('/\s{2,}/', ' ', $field_name);
+					list($field_name, ) = explode(' ', trim($field_name));
+
+					if ($this->_table->hasField($field_name) || strtolower($entity) != strtolower($this->_table->alias())) {
+						return;
+					}
+
+					$subQuery = TableRegistry::get('Field.FieldData')->find()
+						->select('entity_id')
+						->where(
+							[
+								"FieldData.field_instance_slug" => $field_name,
+								'FieldData.entity' => $this->_config['entity'],
+								"FieldData.data {$conjunction}" => $value
+							]
+						);
+
+					$expression->field($this->_table->alias() . '.' . $this->_table->primaryKey());
+					$expression->value($subQuery);
 				});
 
+			$configBefore = $this->_config['entity'];
 			$query->mapReduce($this->_config['mapper']);
+			$configAfter = $this->_config['entity'];
+
+			/**
+			 * FIX: polymorphic entities (eg. Nodes) may have changed self::_config[entity]
+			 * value during mapper invocation.
+			 * Must be respored to initial value in order to avoid unexpected errors.
+			 */
+			if ($configBefore != $configAfter) {
+				$this->_config = $configBefore;
+			}
 		}
 	}
 
