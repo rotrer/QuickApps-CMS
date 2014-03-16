@@ -1,0 +1,10 @@
+{
+	"driver": "MySQL",
+	"persistent": false,
+	"host": "localhost",
+	"login": "root",
+	"password": "",
+	"database": "quickapps",
+	"prefix": false,
+	"encoding": "utf8"
+}
