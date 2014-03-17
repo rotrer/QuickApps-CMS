@@ -99,7 +99,7 @@ class FieldableBehavior extends Behavior {
  * The method which actually fetches custom field data.
  *
  * Iterates over each entity from result set and fetches
- * custom fields data under de `_fields` key.
+ * custom fields data under the `_fields` key.
  *
  * Example:
  *
@@ -116,12 +116,15 @@ class FieldableBehavior extends Behavior {
  *                 [data] => stored data
  *                 ...
  *             ),
+ *             [empty_field] => null
  *             ...
  *         )
  *     )
  *
  * In the example above, the User entity has custom field named `user_age`.
  * and its current value is 22.
+ *
+ * Note that custom fields without stored information will be null.
  *
  * @param Entity $entity the entity to modify
  * @param integer $key entity key index from result collection.
@@ -150,15 +153,17 @@ class FieldableBehavior extends Behavior {
 			)
 			->first();
 
-			$storedData->set(
-				[
-					'label' => $instance->label,
-					'description' => $instance->description,
-					'required' => $instance->required,
-					'settings' => $instance->settings
-				],
-				['guard' => false]
-			);
+			if ($storedData) {
+				$storedData->set(
+					[
+						'label' => $instance->label,
+						'description' => $instance->description,
+						'required' => $instance->required,
+						'settings' => $instance->settings
+					],
+					['guard' => false]
+				);
+			}
 
 			$_fields[$instance->slug] = $storedData;
 		}

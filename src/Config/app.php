@@ -48,7 +48,11 @@ $config = [
 		'cssBaseUrl' => 'css/',
 		'jsBaseUrl' => 'js/',
 		'paths' => [
-			'plugins' => [ROOT . DS . 'Plugin' . DS . DS, APP . 'Plugin' . DS],
+			'plugins' => [
+				ROOT . DS . 'Plugin' . DS,
+				APP . 'Plugin' . DS,
+				APP . 'Template' . DS . 'Themed' . DS
+			],
 			'templates' => [APP . 'Template' . DS],
 		],
 	],
@@ -61,7 +65,7 @@ $config = [
  *   You should treat it as extremely sensitive data.
  */
 	'Security' => [
-		'salt' => '590sdfhbb234089dfgni23',
+		'salt' => '',
 	],
 
 /**
@@ -318,16 +322,9 @@ $config = [
 ];
 
 /**
- * Load site's database information and merge with QuickApps core.
+ * Load site's settings information and merge with QuickAppsCMS core.
  */
-if (file_exists(SITE_ROOT . '/Config/database.json')) {
-	$database = json_decode(file_get_contents(SITE_ROOT . '/Config/database.json'));
-	$config['Datasources']['default']['driver'] = 'Cake\Database\Driver\\' . $database->driver;
-	$config['Datasources']['default']['persistent'] = $database->persistent;
-	$config['Datasources']['default']['host'] = $database->host;
-	$config['Datasources']['default']['login'] = $database->login;
-	$config['Datasources']['default']['password'] = $database->password;
-	$config['Datasources']['default']['database'] = $database->database;
-	$config['Datasources']['default']['prefix'] = $database->prefix;
-	$config['Datasources']['default']['encoding'] = $database->encoding;
+if (file_exists(SITE_ROOT . '/Config/settings.json')) {
+	$settings = json_decode(file_get_contents(SITE_ROOT . '/Config/settings.json'), true);
+	$config = array_merge($config, $settings);
 }

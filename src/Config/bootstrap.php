@@ -66,6 +66,7 @@ use Cake\Error\ErrorHandler;
 use Cake\Log\Log;
 use Cake\Network\Email\Email;
 use Cake\Utility\Inflector;
+use Cake\Event\EventManager;
 
 /**
  * Read configuration file and inject configuration into various
@@ -75,14 +76,8 @@ use Cake\Utility\Inflector;
  * idea to create multiple configuration files, and separate the configuration
  * that changes from configuration that does not. This makes deployment simpler.
  */
-try {
-	Configure::config('boot', new PhpConfig(TMP));
-	Configure::config('default', new PhpConfig());
-	Configure::load('app.php', 'default', false);
-	Configure::load('boot.php', 'boot', false);
-} catch (\Exception $e) {
-	die('Unable to load Config/app.php. Create it by copying Config/app.default.php to Config/app.php.');
-}
+Configure::config('default', new PhpConfig());
+Configure::load('app.php', 'default', false);
 
 /**
  * Uncomment this line and correct your server timezone to fix
@@ -130,20 +125,46 @@ Email::config(Configure::consume('Email'));
 Log::config(Configure::consume('Log'));
 
 /**
+ * Load some handy information for bootstrap.
+ */
+Configure::config('snapshot', new PhpConfig(TMP));
+
+if (!file_exists(TMP . 'snapshot.php') && file_exists(SITE_ROOT . '/Config/settings.json')) {
+	createSnapshot();
+} else {
+	try {
+		Configure::load('snapshot.php', 'snapshot', false);
+	} catch (Exception $e) {
+
+	}
+}
+
+/**
  * Load all registered plugins.
  *
  */
 foreach (App::objects('Plugin') as $plugin) {
-	Plugin::load(
-		$plugin,
-		[
-			'namespace' => "QuickApps\\{$plugin}",
-			'autoload' => true,
-			'bootstrap' => true,
-			'routes' => true,
-			'ignoreMissing' => true
-		]
-	);
+	if (
+		in_array($plugin, Configure::read('snapshot.core_plugins')) ||
+		in_array($plugin, Configure::read('snapshot.active_plugins'))
+		) {
+		Plugin::load(
+			$plugin,
+			[
+				'namespace' => "QuickApps\\{$plugin}",
+				'autoload' => true,
+				'bootstrap' => true,
+				'routes' => true,
+				'ignoreMissing' => true
+			]
+		);
+
+		$eventClass = Plugin::getNamespace($plugin) . "\\Event\\{$plugin}Event";
+
+		if (class_exists($eventClass)) {
+			EventManager::instance()->attach(new $eventClass);
+		}
+	}
 }
 
 /**

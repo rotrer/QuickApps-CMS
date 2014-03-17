@@ -3,7 +3,7 @@ namespace QuickApps\Node\Config;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 
-$node_types = implode('|', (array)Configure::read('boot.node_types'));
+$node_types = implode('|', (array)Configure::read('snapshot.node_types'));
 
 if (!empty($node_types)) {
 	Router::connect(

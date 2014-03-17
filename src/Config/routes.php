@@ -34,7 +34,7 @@ Configure::write('Routing.prefixes', ['admin']);
 /**
  * Redirect everything to installer plugin if it is a new quickapps package.
  */
-if (!file_exists(SITE_ROOT . '/Config/database.json')) {
+if (!file_exists(SITE_ROOT . '/Config/settings.json')) {
 	Router::redirect('/', '/installer/setup', ['status' => 302]);
 	Router::redirect(
 		'/:anything_but_installer',

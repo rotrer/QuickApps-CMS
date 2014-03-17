@@ -1,13 +1,12 @@
 <?php
 namespace QuickApps\Controller;
 use QuickApps\Event\EventTrait;
-use Cake\Event\Event;
-use Cake\Event\EventManager;
-use Cake\Core\App;
 
 class AppController extends \Cake\Controller\Controller {
 	use EventTrait;
 
+	public $theme = 'TwitterBootstrap';
+	public $viewClass = 'QuickApps\View\View';
 	public $uses = [];
 	public $helpers = [
 		'Html' => ['className' => 'QuickApps\View\Helper\HtmlHelper'],
@@ -22,15 +21,5 @@ class AppController extends \Cake\Controller\Controller {
 				$this->loadModel($model);
 			}
 		}
-
-		foreach (App::objects('Plugin') as $plugin) {
-			$eventClass = "QuickApps\\Plugin\\{$plugin}\\Event\\{$plugin}Event";
-
-			if (class_exists($eventClass)) {
-				EventManager::instance()->attach(new $eventClass);
-			}
-		}
-
-		return;
 	}
 }
