@@ -16,6 +16,7 @@ class NodesTable extends Table {
 		);
 		$this->addBehavior('Comment.Commentable');
 		$this->addBehavior('Node.Sluggable');
+		$this->addBehavior('System.Serialized', ['test']);
 		$this->belongsTo(
 			'NodeTypes',
 			[

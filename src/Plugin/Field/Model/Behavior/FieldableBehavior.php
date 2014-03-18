@@ -17,7 +17,9 @@ use Cake\Event\Event;
 use Cake\ORM\Table;
 
 /**
- * Fieldable behavior allows additional fields to be attached to Tables.
+ * # Fieldable Behavior
+ *
+ * Allows additional fields to be attached to Tables.
  * Any Table (Nodes, Users, etc.) can use this behavior to make itself `fieldable` and thus allow
  * fields to be attached to it.
  *
@@ -26,7 +28,7 @@ use Cake\ORM\Table;
  * - FieldInstance: is a Field attached to a single Table. (Schema equivalent: column)
  * - FieldData: the stored data for a particular [FieldInstance, Entity] tuple of your Table. (Schema equivalent: cell value)
  *
- * Basically, this behavior allows you to add `virtual columns` to your table schema.
+ * **Basically, this behavior allows you to add `virtual columns` to your table schema.**
  */
 class FieldableBehavior extends Behavior {
 	private $__entityInstancesCache = [];
@@ -38,10 +40,10 @@ class FieldableBehavior extends Behavior {
 	];
 
 /**
- * Constructor
+ * Constructor.
  *
- * @param Table $table The table this behavior is attached to.
- * @param array $config The config for this behavior.
+ * @param Table $table The table this behavior is attached to
+ * @param array $config Configuration array for this behavior
  */
 	public function __construct(Table $table, array $config = []) {
 		$this->_config['entity'] = strtolower($table->alias());
@@ -60,19 +62,22 @@ class FieldableBehavior extends Behavior {
  * It also looks for custom fields in where-conditions.
  * Custom fields must be prefixed with `:` in condition array. e.g.:
  *
- *     TableRegistry::get('Users')->where(['Users.:first_name LIKE' => 'John%'])
+ *     TableRegistry::get('Users')
+ *         ->where(['Users.:first_name LIKE' => 'John%'])
  *
  * `Users` table has a custom field attached (first_name), and we are looking
  * for all the users whose `first_name` starts with `John`.
  *
- * @param Event $event the beforeFind event that was fired
- * @param Query $query the original query to modify
+ * @param Event $event The beforeFind event that was fired
+ * @param Query $query The original query to modify
  * @return void
  */
 	public function beforeFind(Event $event, $query) {
 		if ($this->_config['enabled']) {
-			$query->clause('where')
-				->traverse(function ($expression) {
+			$whereClause = $query->clause('where');
+
+			if ($whereClause) {
+				$whereClause->traverse(function ($expression) {
 					$field = $expression->getField();
 					$value = $expression->getValue();
 					$conjunction = $expression->type();
@@ -103,6 +108,7 @@ class FieldableBehavior extends Behavior {
 					$expression->field($this->_table->alias() . '.' . $this->_table->primaryKey());
 					$expression->value($subQuery);
 				});
+			}
 
 			$configBefore = $this->_config['entity'];
 			$query->mapReduce($this->_config['mapper']);

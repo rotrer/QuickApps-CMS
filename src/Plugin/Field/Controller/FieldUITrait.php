@@ -19,14 +19,14 @@ use Cake\Error;
  * # Usage:
  *
  * Beside addiding `use FieldUITrait;` to your controller
- * you must also indicate the name of the entities
+ * you must also indicate the name of the Table
  * being managed. Example:
  *
  *     uses QuickApps\Field\Controller\FieldUITrait;
  *
  *     class MyController extends <Plugin>AppController {
  *         use FieldUITrait;
- *         public $manageEntity = 'my_entity_name';
+ *         public $manageTable = 'Nodes';
  *     }
  *
  * In order to avoid trait collision you should always `extends`
@@ -37,7 +37,7 @@ use Cake\Error;
  * # Requirements
  *
  * - This trait should only be used over a clean controller.
- * - You must define `$manageEntity` property in your controller.
+ * - You must define `$manageTable` property in your controller.
  * - Your Controller must be a backend-controller (under `Controller\Admin` namespace).
  *
  * @author Christopher Castro <chris@quickapps.es>
@@ -49,15 +49,15 @@ trait FieldUITrait {
  * @param  Event  $event the event instance.
  * @return void
  * @throws Cake\Error\ForbiddenException When
- * - $manageEntity is not defined.
+ * - $manageTable is not defined.
  * - trait is used in non-controller classes
  * - the controller is not a backend controller.
  */
 	public function beforeFilter(Event $event) {
 		$requestParams = $event->subject->request->params;
 
-		if (!isset($this->manageEntity) || empty($this->manageEntity)) {
-			throw new Error\ForbiddenException('FieldUITrait: The property $manageEntity was not found or is empty.');
+		if (!isset($this->manageTable) || empty($this->manageTable)) {
+			throw new Error\ForbiddenException('FieldUITrait: The property $manageTable was not found or is empty.');
 		}
 
 		if (!($this instanceof \Cake\Controller\Controller)) {
@@ -68,7 +68,7 @@ trait FieldUITrait {
 			throw new Error\ForbiddenException('FieldUITrait: This trait must be used on backend-controllers only.');
 		}
 
-		$this->manageEntity = strtolower($this->manageEntity);
+		$this->manageTable = strtolower($this->manageTable);
 	}
 
 /**
@@ -83,7 +83,7 @@ trait FieldUITrait {
  *     Node\FieldsController::index()
  *
  * The above will try to render `Node/Template/Fields/index.ctp`.
- * But when it does not exists, `Field\Template\FieldUI\index.ctp`
+ * But when it does not exists, `Field/Template/FieldUI/index.ctp`
  * will be used instead (if exists).
  *
  * @param  Event $event the event instance.
@@ -103,17 +103,39 @@ trait FieldUITrait {
 				$this->view = $alternativeTemplatePath . DS . "{$action}.ctp";
 			}
 		}
+
+		parent::beforeRender($event);
 	}
 
 /**
  * FieldUI main action.
+ *
+ * Shows all the fields attached to the Table being managed.
  *
  * @return void
  */
 	public function index() {
 		$instances = TableRegistry::get('Field.FieldInstances')
 			->find()
-			->where(['entity' => $this->manageEntity]);
+			->where(['entity' => $this->manageTable]);
 		$this->set('instances', $instances);
+	}
+
+/**
+ * Handles a single field instance configuration parameters.
+ *
+ * @param integer $id The field instance ID to manage
+ * @return void
+ * @throws Error\NotFoundException When no field instance was found
+ */
+	public function configure($id) {
+		$this->loadModel('Field.FieldInstances');
+		$instance = $this->FieldInstances->get($id);
+
+		if (!$instance) {
+			throw new Error\NotFoundException(__('The requested field does not exists.'));
+		}
+
+		$this->set('instance', $instance);
 	}
 }

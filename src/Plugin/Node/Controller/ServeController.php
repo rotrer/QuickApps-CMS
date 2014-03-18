@@ -9,6 +9,8 @@ class ServeController extends NodeAppController {
 	}
 
 	public function frontpage() {
+		$node = $this->Nodes->find()->first();
+		$this->set('node', $node);
 	}
 
 	public function details($node_type_slug, $node_slug) {
@@ -22,9 +24,7 @@ class ServeController extends NodeAppController {
 			->where($conditions)
 			->first();
 
-		if ($node) {
-			$this->set('node', $node);
-		}
+		$this->set('node', $node);
 	}
 
 	public function search($criteria) {

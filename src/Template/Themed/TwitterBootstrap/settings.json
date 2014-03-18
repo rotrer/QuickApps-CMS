@@ -1,0 +1,14 @@
+{
+	"name": "Twitter Bootstrap",
+	"description": "QuickApps CMS frontend default theme.",
+	"author": [
+		{
+			"name": "Christopher Castro",
+			"email": "chris@quickapps.es"
+		}
+	],
+	"regions": {
+		"main-menu": "Main Menu",
+		"footer": "Footer"
+	}
+}

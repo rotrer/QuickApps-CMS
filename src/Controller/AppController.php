@@ -1,6 +1,6 @@
 <?php
 namespace QuickApps\Controller;
-use QuickApps\Event\EventTrait;
+use QuickApps\Utility\EventTrait;
 
 class AppController extends \Cake\Controller\Controller {
 	use EventTrait;

@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 namespace QuickApps\View\Helper;
-use QuickApps\Event\EventTrait;
+use QuickApps\Utility\EventTrait;
 use Cake\View\Helper\FormHelper as CakeFormHelper;
 use Cake\View\Widget\WidgetRegistry;
 
@@ -37,7 +37,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function widgetRegistry(WidgetRegistry $instance = null, $widgets = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.widgetRegistry', $this, $args);
+		$event = $this->event('Helper.Form.widgetRegistry', $args);
 		extract((array)$event->result);
 
 		return parent::widgetRegistry($instance, $widgets);
@@ -72,7 +72,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function create($model = null, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.create', $this, $args);
+		$event = $this->event('Helper.Form.create', $args);
 		extract((array)$event->result);
 
 		return parent::create($model, $options);
@@ -89,7 +89,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function end($secureAttributes = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.end', $this, $args);
+		$event = $this->event('Helper.Form.end', $args);
 		extract((array)$event->result);
 
 		return parent::end($secureAttributes);
@@ -112,7 +112,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function secure($fields = array(), $secureAttributes = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.secure', $this, $args);
+		$event = $this->event('Helper.Form.secure', $args);
 		extract((array)$event->result);
 
 		return parent::secure($fields, $secureAttributes);
@@ -130,7 +130,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function unlockField($name = null) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.unlockField', $this, $args);
+		$event = $this->event('Helper.Form.unlockField', $args);
 		extract((array)$event->result);
 
 		return parent::unlockField($name);
@@ -145,7 +145,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function isFieldError($field) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.isFieldError', $this, $args);
+		$event = $this->event('Helper.Form.isFieldError', $args);
 		extract((array)$event->result);
 
 		return parent::isFieldError($field);
@@ -170,7 +170,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function error($field, $text = null, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.error', $this, $args);
+		$event = $this->event('Helper.Form.error', $args);
 		extract((array)$event->result);
 
 		return parent::error($field, $text, $options);
@@ -239,7 +239,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function label($fieldName, $text = null, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.label', $this, $args);
+		$event = $this->event('Helper.Form.label', $args);
 		extract((array)$event->result);
 
 		return parent::label($fieldName, $text, $options);
@@ -280,7 +280,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function inputs($fields = null, $blacklist = null, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.inputs', $this, $args);
+		$event = $this->event('Helper.Form.inputs', $args);
 		extract((array)$event->result);
 
 		return parent::inputs($fields, $blacklist, $options);
@@ -310,7 +310,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function input($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.input', $this, $args);
+		$event = $this->event('Helper.Form.input', $args);
 		extract((array)$event->result);
 
 		return parent::input($fieldName, $options);
@@ -337,7 +337,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function checkbox($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.checkbox', $this, $args);
+		$event = $this->event('Helper.Form.checkbox', $args);
 		extract((array)$event->result);
 
 		return parent::checkbox($fieldName, $options);
@@ -364,7 +364,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function radio($fieldName, $options = [], $attributes = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.radio', $this, $args);
+		$event = $this->event('Helper.Form.radio', $args);
 		extract((array)$event->result);
 
 		return parent::radio($fieldName, $options, $attributes);
@@ -392,7 +392,7 @@ class FormHelper extends CakeFormHelper {
  * @throws \Cake\Error\Exception When there are no params for the method call.
  */
 	public function __call($method, $params) {
-		return parent::__call($method, $param);
+		return parent::__call($method, $params);
 	}
 
 /**
@@ -409,7 +409,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function textarea($fieldName, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.textarea', $this, $args);
+		$event = $this->event('Helper.Form.textarea', $args);
 		extract((array)$event->result);
 
 		return parent::textarea($fieldName, $options);
@@ -425,7 +425,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function hidden($fieldName, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.hidden', $this, $args);
+		$event = $this->event('Helper.Form.hidden', $args);
 		extract((array)$event->result);
 
 		return parent::hidden($fieldName, $options);
@@ -441,7 +441,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function file($fieldName, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.file', $this, $args);
+		$event = $this->event('Helper.Form.file', $args);
 		extract((array)$event->result);
 
 		return parent::file($fieldName, $options);
@@ -464,7 +464,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function button($title, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.button', $this, $args);
+		$event = $this->event('Helper.Form.button', $args);
 		extract((array)$event->result);
 
 		return parent::button($title, $options);
@@ -489,7 +489,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function postButton($title, $url, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.postButton', $this, $args);
+		$event = $this->event('Helper.Form.postButton', $args);
 		extract((array)$event->result);
 
 		return parent::postButton($title, $url, $options);
@@ -521,7 +521,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function postLink($title, $url = null, $options = array(), $confirmMessage = false) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.postLink', $this, $args);
+		$event = $this->event('Helper.Form.postLink', $args);
 		extract((array)$event->result);
 
 		return parent::postLink($title, $url, $options, $confirmMessage);
@@ -547,7 +547,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function submit($caption = null, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.submit', $this, $args);
+		$event = $this->event('Helper.Form.submit', $args);
 		extract((array)$event->result);
 
 		return parent::submit($caption, $options);
@@ -608,7 +608,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function select($fieldName, $options = [], $attributes = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.select', $this, $args);
+		$event = $this->event('Helper.Form.select', $args);
 		extract((array)$event->result);
 
 		return parent::select($fieldName, $options, $attributes);
@@ -638,7 +638,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function multiCheckbox($fieldName, $options, $attributes = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.multiCheckbox', $this, $args);
+		$event = $this->event('Helper.Form.multiCheckbox', $args);
 		extract((array)$event->result);
 
 		return parent::multiCheckbox($fieldName, $options, $attributes);
@@ -660,7 +660,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function day($fieldName = null, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.day', $this, $args);
+		$event = $this->event('Helper.Form.day', $args);
 		extract((array)$event->result);
 
 		return parent::day($fieldName, $options);
@@ -686,7 +686,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function year($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.widgetRegistry', $this, $args);
+		$event = $this->event('Helper.Form.widgetRegistry', $args);
 		extract((array)$event->result);
 
 		return parent::widgetRegistry($instance, $widgets);
@@ -710,7 +710,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function month($fieldName, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.month', $this, $args);
+		$event = $this->event('Helper.Form.month', $args);
 		extract((array)$event->result);
 
 		return parent::month($fieldName, $options);
@@ -733,7 +733,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function hour($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.hour', $this, $args);
+		$event = $this->event('Helper.Form.hour', $args);
 		extract((array)$event->result);
 
 		return parent::hour($fieldName, $options);
@@ -758,7 +758,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function minute($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.minute', $this, $args);
+		$event = $this->event('Helper.Form.minute', $args);
 		extract((array)$event->result);
 
 		return parent::minute($fieldName, $options);
@@ -780,7 +780,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function meridian($fieldName, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.meridian', $this, $args);
+		$event = $this->event('Helper.Form.meridian', $args);
 		extract((array)$event->result);
 
 		return parent::meridian($fieldName, $options);
@@ -824,7 +824,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function dateTime($fieldName, $options = array()) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.dateTime', $this, $args);
+		$event = $this->event('Helper.Form.dateTime', $args);
 		extract((array)$event->result);
 
 		return parent::dateTime($fieldName, $options);
@@ -844,7 +844,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function time($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.time', $this, $args);
+		$event = $this->event('Helper.Form.time', $args);
 		extract((array)$event->result);
 
 		return parent::time($fieldName, $options);
@@ -864,7 +864,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function date($fieldName, $options = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.date', $this, $args);
+		$event = $this->event('Helper.Form.date', $args);
 		extract((array)$event->result);
 
 		return parent::date($fieldName, $options);
@@ -887,7 +887,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function addContextProvider($name, callable $check) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.addContextProvider', $this, $args);
+		$event = $this->event('Helper.Form.addContextProvider', $args);
 		extract((array)$event->result);
 
 		return parent::addContextProvider($name, $check);
@@ -902,7 +902,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function context() {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.context', $this, $args);
+		$event = $this->event('Helper.Form.context', $args);
 		extract((array)$event->result);
 
 		return parent::context();
@@ -920,7 +920,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function addWidget($name, $spec) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.addWidget', $this, $args);
+		$event = $this->event('Helper.Form.addWidget', $args);
 		extract((array)$event->result);
 
 		return parent::addWidget($name, $spec);
@@ -940,7 +940,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function widget($name, array $data = []) {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.widget', $this, $args);
+		$event = $this->event('Helper.Form.widget', $args);
 		extract((array)$event->result);
 
 		return parent::widget($name, $data);
@@ -955,7 +955,7 @@ class FormHelper extends CakeFormHelper {
  */
 	public function resetTemplates() {
 		$args = get_defined_vars();
-		$event = $this->event('Helper.Form.resetTemplates', $this, $args);
+		$event = $this->event('Helper.Form.resetTemplates', $args);
 		extract((array)$event->result);
 
 		return parent::resetTemplates();

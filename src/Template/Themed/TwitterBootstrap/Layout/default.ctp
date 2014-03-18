@@ -5,13 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php echo $this->fetch('title'); ?></title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<?php echo $this->Html->meta('icon'); ?>
 	<?php echo $this->Html->css('bootstrap.min.css'); ?>
+	<?php echo $this->Html->script('bootstrap.min.js'); ?>
 	<?php echo $this->fetch('meta'); ?>
 	<?php echo $this->fetch('css'); ?>
 	<?php echo $this->fetch('script'); ?>
 	<style>
-		body { padding-top: 50px;}
+		body { padding-top: 100px;}
 		.starter-template {
 			padding: 40px 15px;
 			text-align: center;

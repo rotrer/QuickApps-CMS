@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 namespace QuickApps\View\Helper;
-use QuickApps\Event\EventTrait;
+use QuickApps\Utility\EventTrait;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
 
 /**

@@ -49,7 +49,7 @@ $config = [
 		'jsBaseUrl' => 'js/',
 		'paths' => [
 			'plugins' => [
-				ROOT . DS . 'Plugin' . DS,
+				SITE_ROOT . DS . 'Plugin' . DS,
 				APP . 'Plugin' . DS,
 				APP . 'Template' . DS . 'Themed' . DS
 			],

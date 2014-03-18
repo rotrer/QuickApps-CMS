@@ -8,30 +8,6 @@ use Cake\Utility\Folder;
 use Cake\ORM\TableRegistry;
 
 /**
- * Returns a translated string if one is found; Otherwise, the submitted message.
- *
- * @param string $singular Text to translate
- * @param mixed $args Array with arguments or multiple arguments in function
- * @return mixed translated string
- * @link http://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#__
- */
-function __($singular, $args = null) {
-	if (!$singular) {
-		return;
-	}
-
-	$translated = I18n::translate($singular);
-	if ($args === null) {
-		return $translated;
-	} elseif (!is_array($args)) {
-		$args = array_slice(func_get_args(), 1);
-	}
-
-	$translated = preg_replace('/(?<!%)%(?![%\'\-+bcdeEfFgGosuxX\d\.])/', '%%', $translated);
-	return vsprintf($translated, $args);
-}
-
-/**
  * Stores some bootstrap-handy information
  * into a persistent file `SITE/tmp/snapshot.php`.
  *
@@ -45,7 +21,8 @@ function createSnapshot() {
 		'active_plugins' => [],
 		'disabled_plugins' => [],
 		'core_plugins' => [],
-		'core_themes' => []
+		'core_themes' => [],
+		'variables' => []
 	];
 
 	foreach (TableRegistry::get('Plugins')->find()->select(['name', 'status'])->all() as $plugin) {
@@ -58,6 +35,10 @@ function createSnapshot() {
 
 	foreach (TableRegistry::get('NodeTypes')->find()->select(['slug'])->all() as $nodeType) {
 		$snapshot['node_types'][] = $nodeType->slug;
+	}
+
+	foreach (TableRegistry::get('Variables')->find()->all() as $variable) {
+		$snapshot['variables'][$variable->name] = $variable->value;
 	}
 
 	$Folder = new Folder(APP . 'Plugin');

@@ -1,5 +1,5 @@
 <?php
-namespace QuickApps\Event;
+namespace QuickApps\Utility;
 use Cake\Event\EventManager;
 use Cake\Event\Event;
 
@@ -10,6 +10,7 @@ trait EventTrait {
 	public function event($eventName, $args = []) {
 		$event = new Event($eventName, $this, $args);
 		EventManager::instance()->dispatch($event);
+
 		return $event;
 	}
 }

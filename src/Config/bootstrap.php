@@ -60,7 +60,7 @@ use Cake\Configure\Engine\PhpConfig;
 use Cake\Console\ConsoleErrorHandler;
 use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
+use QuickApps\Utility\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
 use Cake\Log\Log;
@@ -146,7 +146,9 @@ if (!file_exists(TMP . 'snapshot.php') && file_exists(SITE_ROOT . '/Config/setti
 foreach (App::objects('Plugin') as $plugin) {
 	if (
 		in_array($plugin, Configure::read('snapshot.core_plugins')) ||
-		in_array($plugin, Configure::read('snapshot.active_plugins'))
+		in_array($plugin, Configure::read('snapshot.active_plugins')) ||
+		$plugin === Configure::read('snapshot.variables.site_theme') ||
+		$plugin === Configure::read('snapshot.variables.admin_theme')
 		) {
 		Plugin::load(
 			$plugin,
